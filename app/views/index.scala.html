@@ -1,19 +1,40 @@
 @(signedRequestJson: String)
 
 @main("Salesforce Canvas Seed") {
-    <script>
-        var signedRequestJson = @Html(signedRequestJson);
-    </script>
-    <script src="@routes.Assets.at("lib/SalesforceCanvasJavascriptSDK/js/canvas-all.js")"></script>
-    <script src="@routes.Assets.at("javascripts/index.js")" type="text/javascript"></script>
+<script>
+    var signedRequestJson = @Html(signedRequestJson);
+</script>
+<script src="@routes.Assets.at(" lib/SalesforceCanvasJavascriptSDK/js/canvas-all.js")"></script>
+<script src="@routes.Assets.at(" javascripts/index.js")" type="text/javascript"></script>
 
-    <h1>Hello <span id='username'></span></h1>
-    The BU of this opportunity is <span id='bu'></span>
-    <!--comment
+<script>
+    function createDynamicURL() {
+        //The variable to be returned
+        var URL;
+
+        //The variables containing the respective IDs
+        var buCode = window.signedRequestJson.context.environment.parameters.bucode;
+        var OpportunityNumber = window.signedRequestJson.context.environment.parameters.oppnumber;
+
+            //Forming the variable to return    
+            URL+="https://ssrs-dev.usgboral.com/ReportServer/Pages/ReportViewer.aspx?/OpportunitySQLDW&BU=";
+        URL += buCode;
+        URL += "&OpportunityNumber=";
+        URL += OpportunityNumber;
+        URL += "&rs:Command=Render";
+
+        return URL;
+    }
+</script>
+
+<h1>Hello <span id='username'></span></h1>
+The BU of this opportunity is <span id='bu'></span>
+The Opporunity Number is <span id='oppNo'></span>
+<!--comment
     The record Id of this opportunity is <span id='recId'></span>
     The Client Org Instance Id is <span id='instanceId'></span>
     The Context Object is <span id='contextDetails'></span>
     The Environment Object is <span id='environment'></span>
     -->
-    <a href="https://ssrs-dev.usgboral.com/ReportServer/Pages/ReportViewer.aspx?/SalesPersonReport&BU=KR&rs:Command=Render&rs:Embed=true">Click to load Repots</a>
+<a href="javascript:window.location=createDynamicURL();">Click to load Repots</a>
 }
